@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Transfer – Transfer Teks via QR Code</title>
+    <meta
+      name="description"
+      content="Transfer teks dan link antara perangkat menggunakan QR code. Generate dan scan QR code langsung di browser, tanpa install apapun."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-orbs" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <div class="container">
+      <header class="header">
+        <div class="logo">
+          <svg
+            class="logo-icon"
+            viewBox="0 0 48 48"
+            fill="none"
+            aria-hidden="true"
+          >
+            <rect
+              x="4"
+              y="4"
+              width="16"
+              height="16"
+              rx="2"
+              fill="currentColor"
+              opacity="0.9"
+            />
+            <rect
+              x="8"
+              y="8"
+              width="8"
+              height="8"
+              rx="1"
+              fill="var(--bg-card)"
+            />
+            <rect
+              x="28"
+              y="4"
+              width="16"
+              height="16"
+              rx="2"
+              fill="currentColor"
+              opacity="0.9"
+            />
+            <rect
+              x="32"
+              y="8"
+              width="8"
+              height="8"
+              rx="1"
+              fill="var(--bg-card)"
+            />
+            <rect
+              x="4"
+              y="28"
+              width="16"
+              height="16"
+              rx="2"
+              fill="currentColor"
+              opacity="0.9"
+            />
+            <rect
+              x="8"
+              y="32"
+              width="8"
+              height="8"
+              rx="1"
+              fill="var(--bg-card)"
+            />
+            <rect
+              x="28"
+              y="28"
+              width="6"
+              height="6"
+              rx="1"
+              fill="currentColor"
+              opacity="0.9"
+            />
+            <rect
+              x="38"
+              y="28"
+              width="6"
+              height="6"
+              rx="1"
+              fill="currentColor"
+              opacity="0.9"
+            />
+            <rect
+              x="28"
+              y="38"
+              width="6"
+              height="6"
+              rx="1"
+              fill="currentColor"
+              opacity="0.9"
+            />
+            <rect
+              x="38"
+              y="38"
+              width="6"
+              height="6"
+              rx="1"
+              fill="currentColor"
+              opacity="0.9"
+            />
+          </svg>
+          <span>QR Transfer</span>
+        </div>
+        <p class="tagline">
+          Transfer teks &amp; link antar perangkat via QR code
+        </p>
+      </header>
+
+      <div class="card">
+        <!-- Tab Navigation -->
+        <div class="tabs" role="tablist" aria-label="Mode transfer">
+          <button
+            id="tab-generate"
+            class="tab tab-active"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-generate"
+            onclick="switchTab('generate')"
+          >
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect
+                x="2"
+                y="2"
+                width="7"
+                height="7"
+                rx="1"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <rect
+                x="11"
+                y="2"
+                width="7"
+                height="7"
+                rx="1"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <rect
+                x="2"
+                y="11"
+                width="7"
+                height="7"
+                rx="1"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <rect
+                x="13"
+                y="13"
+                width="3"
+                height="3"
+                rx="0.5"
+                fill="currentColor"
+              />
+            </svg>
+            Generate QR
+          </button>
+          <button
+            id="tab-scan"
+            class="tab"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-scan"
+            onclick="switchTab('scan')"
+          >
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path
+                d="M3 7V4a1 1 0 0 1 1-1h3"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M17 7V4a1 1 0 0 0-1-1h-3"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M3 13v3a1 1 0 0 0 1 1h3"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M17 13v3a1 1 0 0 1-1 1h-3"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <line
+                x1="2"
+                y1="10"
+                x2="18"
+                y2="10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            Scan QR
+          </button>
+        </div>
+
+        <!-- Panel: Generate -->
+        <div
+          id="panel-generate"
+          class="panel panel-active"
+          role="tabpanel"
+          aria-labelledby="tab-generate"
+        >
+          <div class="section-label">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path
+                d="M8 1v14M1 8h14"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            Teks atau Link
+          </div>
+          <div class="input-wrapper">
+            <textarea
+              id="qr-input"
+              class="textarea"
+              placeholder="Paste teks atau link di sini…&#10;&#10;Contoh: https://github.com atau pesan apapun"
+              rows="5"
+              aria-label="Input teks atau link untuk di-generate menjadi QR code"
+              oninput="handleInput()"
+            ></textarea>
+            <div class="char-counter" id="char-counter">0 karakter</div>
+          </div>
+
+          <div class="btn-group">
+            <button
+              id="btn-generate"
+              class="btn btn-primary"
+              onclick="generateQR()"
+              disabled
+              aria-label="Generate QR code"
+            >
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <rect
+                  x="2"
+                  y="2"
+                  width="7"
+                  height="7"
+                  rx="1"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                />
+                <rect
+                  x="11"
+                  y="2"
+                  width="7"
+                  height="7"
+                  rx="1"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                />
+                <rect
+                  x="2"
+                  y="11"
+                  width="7"
+                  height="7"
+                  rx="1"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                />
+                <rect
+                  x="13"
+                  y="13"
+                  width="3"
+                  height="3"
+                  rx="0.5"
+                  fill="currentColor"
+                />
+              </svg>
+              Generate QR
+            </button>
+            <button
+              class="btn btn-ghost"
+              onclick="clearInput()"
+              aria-label="Hapus input"
+            >
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path
+                  d="M5 5l10 10M15 5L5 15"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Hapus
+            </button>
+          </div>
+
+          <div
+            id="qr-output"
+            class="qr-output hidden"
+            aria-live="polite"
+            aria-label="Hasil QR code"
+          >
+            <div class="qr-card">
+              <div class="qr-label">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path
+                    d="M8 2a6 6 0 1 1 0 12A6 6 0 0 1 8 2z"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                  />
+                  <path
+                    d="M8 7v4M8 5.5v.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Arahkan kamera HP ke QR code ini
+              </div>
+              <div
+                id="qr-code"
+                class="qr-canvas-wrapper"
+                aria-label="QR code canvas"
+              ></div>
+              <div class="qr-meta" id="qr-meta"></div>
+            </div>
+            <button
+              class="btn btn-download"
+              onclick="downloadQR()"
+              aria-label="Download QR sebagai PNG"
+            >
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path
+                  d="M10 3v10M6 9l4 4 4-4"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3 15h14"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Download PNG
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel: Scan -->
+        <div
+          id="panel-scan"
+          class="panel hidden"
+          role="tabpanel"
+          aria-labelledby="tab-scan"
+        >
+          <div class="scan-info">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle
+                cx="10"
+                cy="10"
+                r="7"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <path
+                d="M10 9v5M10 7h.01"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            Klik tombol di bawah lalu arahkan kamera ke QR code
+          </div>
+
+          <div
+            id="scanner-wrapper"
+            class="scanner-wrapper hidden"
+            aria-label="Live camera scanner"
+          >
+            <div id="qr-reader"></div>
+            <div class="scan-overlay" aria-hidden="true">
+              <div class="scan-corner tl"></div>
+              <div class="scan-corner tr"></div>
+              <div class="scan-corner bl"></div>
+              <div class="scan-corner br"></div>
+              <div class="scan-line"></div>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button
+              id="btn-start-scan"
+              class="btn btn-primary"
+              onclick="startScan()"
+              aria-label="Mulai scan QR code"
+            >
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle
+                  cx="10"
+                  cy="10"
+                  r="7"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                />
+                <circle
+                  cx="10"
+                  cy="10"
+                  r="3"
+                  fill="currentColor"
+                  opacity="0.7"
+                />
+              </svg>
+              Mulai Scan
+            </button>
+            <button
+              id="btn-stop-scan"
+              class="btn btn-danger hidden"
+              onclick="stopScan()"
+              aria-label="Hentikan scan"
+            >
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <rect
+                  x="5"
+                  y="5"
+                  width="10"
+                  height="10"
+                  rx="1"
+                  fill="currentColor"
+                  opacity="0.8"
+                />
+              </svg>
+              Stop Scan
+            </button>
+          </div>
+
+          <div id="scan-result" class="scan-result hidden" aria-live="polite">
+            <div class="result-header">
+              <svg
+                class="result-icon"
+                viewBox="0 0 20 20"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 10l4 4 8-8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span>QR berhasil di-scan!</span>
+            </div>
+            <div class="result-label">Konten:</div>
+            <div
+              id="scan-text"
+              class="result-text"
+              aria-label="Hasil scan QR code"
+            ></div>
+            <div class="result-actions">
+              <button
+                class="btn btn-primary btn-sm"
+                onclick="copyResult()"
+                id="btn-copy"
+                aria-label="Salin hasil scan"
+              >
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <rect
+                    x="7"
+                    y="3"
+                    width="10"
+                    height="13"
+                    rx="1.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M3 6h3M3 9h1"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <rect
+                    x="3"
+                    y="5"
+                    width="8"
+                    height="11"
+                    rx="1.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                </svg>
+                Copy
+              </button>
+              <button
+                class="btn btn-ghost btn-sm"
+                id="btn-open-link"
+                onclick="openLink()"
+                aria-label="Buka link di tab baru"
+                style="display: none"
+              >
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path
+                    d="M10 4H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-6"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M13 3h4v4M17 3l-7 7"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Buka Link
+              </button>
+              <button
+                class="btn btn-ghost btn-sm"
+                onclick="resetScan()"
+                aria-label="Scan ulang"
+              >
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path
+                    d="M4 10a6 6 0 1 1 1.5 4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M4 14v-4h4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Scan Lagi
+              </button>
+            </div>
+          </div>
+
+          <div id="scan-error" class="scan-error hidden" aria-live="assertive">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle
+                cx="10"
+                cy="10"
+                r="7"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <path
+                d="M10 7v4M10 13h.01"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span id="scan-error-msg"></span>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>💾 Tidak ada data tersimpan</span>
+        <span class="sep">·</span>
+        <span>⚡ 100% runs di browser</span>
+        <span class="sep">·</span>
+        <span>🔒 Privasi terjaga</span>
+      </footer>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- CDN Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
